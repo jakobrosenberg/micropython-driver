@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "CommonJS",
     "target": "ES2020",
     "checkJs": true,
     "allowJs": true,
@@ -18,6 +18,7 @@
     "test/**/*.ts",
     "types/typedef.js",
     "types/store.js",
+    "types/globals.d.ts",
     "./globals.d.ts"
   ],
   "exclude": ["node_modules/**"]
