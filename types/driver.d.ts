@@ -5,5 +5,5 @@ export declare class Driver extends EventEmitter {
   disconnect: () => void
   connect: () => void
   write: (data) => void
-  constructor(options: DeviceUrl) {}
+  constructor(url: DeviceUrl, options: Object) {}
 }
