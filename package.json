@@ -1,0 +1,22 @@
+{
+  "name": "micropython-driver",
+  "version": "0.0.1",
+  "description": "",
+  "main": "lib/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "probs . --runner fork"
+  },
+  "keywords": [
+    "pycom",
+    "micropython"
+  ],
+  "author": "jakobrosenberg@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^9.4.0",
+    "probs": "^1.1.0-20",
+    "serialport": "^10.4.0",
+    "telnet-client": "^2.0.4"
+  }
+}
