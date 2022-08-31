@@ -9,5 +9,4 @@
  *
  * @typedef {typeof import('./driver').Driver} DriverClass
  * @typedef {import('./driver').Driver} Driver
- *
  */

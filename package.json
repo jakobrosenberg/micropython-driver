@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "type": "module",
   "scripts": {
-    "test": "probs . --runner fork"
+    "test": "probs . --runner fork --timeout 1000 --concurrency 1"
   },
   "keywords": [
     "pycom",
