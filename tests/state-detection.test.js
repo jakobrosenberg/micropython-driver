@@ -15,7 +15,8 @@ test("can detect states", async () => {
   const device = new Device({ url: "serial://" + devicePath });
   await device.connect();
 
-  test("can detect safeboot and repl", async () => {
+  test("can detect safeboot and repl", async (probs) => {
+    probs.timeout = 3000;
     assert(device.replMode !== "safebooting");
     const replModePromise = new Promise((resolve) => device.once("replMode", resolve));
     device.sendData("\x06");
@@ -36,8 +37,8 @@ test("can detect states", async () => {
     await device.enterRawRepl();
     assert.equal(device.replMode, "rawRepl");
 
-    test("can detect rawRepl errors", async (ctx) => {
-      ctx.timeout = 3000;
+    test("can detect rawRepl errors", async (probs) => {
+      probs.timeout = 3000;
       const rawReplResult = new Promise((resolve) => device.on("rawDataCollected", resolve));
       device.sendData("i will fail\x04");
       const result = await new Promise((resolve) => device.driver.once("data", resolve));
