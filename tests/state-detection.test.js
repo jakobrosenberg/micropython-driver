@@ -41,15 +41,37 @@ test("can detect states", async () => {
       probs.timeout = 3000;
       const rawReplResult = new Promise((resolve) => device.on("rawDataCollected", resolve));
       device.sendData("i will fail\x04");
-      const result = await new Promise((resolve) => device.driver.once("data", resolve));
-      console.log("result");
-      console.log(result.toString());
-      console.log("rawReplResult", await rawReplResult);
+
+      assert.deepEqual(await rawReplResult, {
+        data: "",
+        error:
+          "Traceback (most recent call last):\r\n" + '  File "<stdin>", line 1\r\n' + "SyntaxError: invalid syntax\r\n",
+        discarded: ">",
+        completed: true,
+      });
+      assert.equal(device.replMode, "rawRepl");
+    });
+    test("can leave rawRepl", async () => {
+      device.sendData("\x02");
+      await new Promise((resolve) => device.once("replMode", resolve));
+      assert.equal(device.replMode, "repl");
     });
   });
-
-  // test("can detect rawRepl errors mode", () => {});
-  // test("can detect paste mode", () => {});
-
-  // test("can detect machine.reset()", () => {});
+  test("can detect machine.reset in rawRepl", () => {
+    test("can enter rawRepl", async () => {
+      await device.enterRawRepl();
+      assert.equal(device.replMode, "rawRepl");
+      assert.equal(device._rawReplState, "receiving");
+    });
+    test("can detect machine.reset", async (probs) => {
+      probs.timeout = 3000;
+      const rawReplResultPromise = new Promise((resolve) => device.on("rawDataCollected", resolve));
+      device.sendData("import machine\nprint('hello')\nmachine.reset()\x04");
+      const rawReplResult = await rawReplResultPromise;
+      assert.match(rawReplResult.data, /^hello\r\n.+\r\n>>> $/s);
+      assert.equal(rawReplResult.error, "");
+      assert.equal(rawReplResult.discarded, "");
+      assert.equal(rawReplResult.completed, false);
+    });
+  });
 });
