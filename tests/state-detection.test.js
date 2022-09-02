@@ -11,12 +11,13 @@ beforeAll(async () => {
 // const largeScript = "value = '" + "".padEnd(10000, "0") + "'\nprint('value is')\nprint(value)";
 const largeScript = "value = '" + "".padEnd(100, "0") + "'\nprint('value is')\nprint(value)";
 
-test("can detect states", async () => {
+test("can detect states", async (probs) => {
   const device = new Device({ url: "serial://" + devicePath });
+  probs.options.onError = (ctx) => console.log(`<< LOGS FOR ${ctx.scope.join(" > ")} >>\n${device.history.render()}`);
+
   await device.connect();
 
   test("can detect safeboot and repl", async (probs) => {
-    probs.timeout = 3000;
     assert(device.replMode !== "safebooting");
     const replModePromise = new Promise((resolve) => device.once("replMode", resolve));
     device.sendData("\x06");
@@ -27,8 +28,6 @@ test("can detect states", async () => {
   test("can detect repl", async () => {
     device._replMode = "unknown";
     const replModePromise = new Promise((resolve) => device.once("replMode", resolve));
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    console.log("send line change");
     device.sendData("\r\n");
     assert.equal(await replModePromise, "repl");
     assert.equal(device.replMode, "repl");
