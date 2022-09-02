@@ -25,7 +25,8 @@ test("can detect states", async (probs) => {
     const nextReplMode = await new Promise((resolve) => device.once("replMode", resolve));
     assert.equal(nextReplMode, "repl");
   });
-  test("can detect repl", async () => {
+  test("can detect repl", async (probs) => {
+    probs.options.timeout = 3000;
     device._replMode = "unknown";
     const replModePromise = new Promise((resolve) => device.once("replMode", resolve));
     device.sendData("\r\n");
