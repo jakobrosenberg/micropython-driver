@@ -37,7 +37,7 @@ test("can detect states", async (probs) => {
     assert.equal(device.replMode, "rawRepl");
 
     test("can detect rawRepl errors", async (probs) => {
-      probs.timeout = 3000;
+      probs.options.timeout = 3000;
       const rawReplResult = new Promise((resolve) => device.on("rawDataCollected", resolve));
       device.sendData("i will fail\x04");
 
@@ -63,7 +63,6 @@ test("can detect states", async (probs) => {
       assert.equal(device._rawReplState, "receiving");
     });
     test("can detect machine.reset", async (probs) => {
-      probs.timeout = 3000;
       const rawReplResultPromise = new Promise((resolve) => device.on("rawDataCollected", resolve));
       device.sendData("import machine\nprint('hello')\nmachine.reset()\x04");
       const rawReplResult = await rawReplResultPromise;
