@@ -1,5 +1,6 @@
 /**
- * @typedef {import('../lib/classes/DeviceUri').DeviceUrl} DeviceUrl
+ * @typedef {import('../lib/device/DeviceUri').DeviceUrl} DeviceUrl
+ * @typedef {import('../lib/device/Device').Device} Device
  *
  * @typedef {Object} DriverProps
  * @prop {function} disconnect
